@@ -2,8 +2,8 @@ name: Update README
 
 on:
   schedule:
-    - cron: '0 0 * * *
-  workflow_dispatch:       
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -18,7 +18,6 @@ jobs:
       - name: Update timestamp in README
         run: |
           DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
-          # Replace a line marked with <!--LAST_UPDATED--> in README.md
           sed -i "s|<!--LAST_UPDATED-->.*|<!--LAST_UPDATED--> Last updated: $DATE|" README.md
 
       - name: Commit changes
