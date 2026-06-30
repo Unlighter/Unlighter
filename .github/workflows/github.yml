@@ -1,30 +1,26 @@
-name: Update README
+name: readme-sync
 
 on:
   schedule:
     - cron: '0 0 * * *'
-  workflow_dispatch:
-
-permissions:
-  contents: write
+  workflow_dispatch: 
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Update timestamp in README
+      - name: update date
         run: |
-          DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
-          sed -i "s|<!--LAST_UPDATED-->.*|<!--LAST_UPDATED--> Last updated: $DATE|" README.md
+          sed -i "s/Last updated: .*/Last updated: $(date -u +'%b %d, %Y')/g" README.md
 
-      - name: Commit changes
+      - name: git push
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "YourName"
+          git config user.email "your-email@example.com"
           git add README.md
-          git diff --staged --quiet || git commit -m "chore: update README timestamp"
-          git pull --rebase origin main
+          git commit -m "docs: refresh timestamp"
           git push
